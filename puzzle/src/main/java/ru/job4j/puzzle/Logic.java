@@ -2,6 +2,7 @@ package ru.job4j.puzzle;
 
 import ru.job4j.puzzle.firuges.Cell;
 import ru.job4j.puzzle.firuges.Figure;
+
 import java.util.Arrays;
 
 public class Logic {
@@ -35,8 +36,8 @@ public class Logic {
         boolean result = cells.length > 0;
         for (Cell cell : cells) {
             if (findBy(cell) != -1) {
-               result = false;
-               break;
+                result = false;
+                break;
             }
         }
         return result;
@@ -61,7 +62,39 @@ public class Logic {
     }
 
     public boolean isWin() {
-        return Win.check(convert());
+        int[][] table = this.convert();
+        boolean result = false;
+        for (int i = 0; i < table.length; i++) {
+            if (table[i][i] == 1) {
+                if (monoHorizontal(table, i) || monoVertical(table, i)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static boolean monoHorizontal(int[][] board, int row) {
+        boolean result = true;
+        for (int i = 0; i < board.length; i++) {
+            if (board[row][i] != 1) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static boolean monoVertical(int[][] board, int column) {
+        boolean result = true;
+        for (int i = 0; i < board[0].length; i++) {
+            if (board[i][column] != 1) {
+                result = false;
+                break;
+            }
+        }
+        return result;
     }
 
     public int[][] convert() {
@@ -76,6 +109,7 @@ public class Logic {
         }
         return table;
     }
+
 
     @Override
     public String toString() {
