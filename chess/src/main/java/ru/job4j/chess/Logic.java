@@ -25,13 +25,24 @@ public class Logic {
         int index = findBy(source);
         Cell[] steps = figures[index].way(source, dest);
         if (!isFree(steps)) {
-            throw new OccupiedCellException();
+            figures[index] = figures[index].copy(source);
+            throw new OccupiedCellException("Way is not free");
         }
         figures[index] = figures[index].copy(dest);
     }
 
     private boolean isFree(Cell[] steps) {
-        return true;
+        boolean free = true;
+        for (int i = 0; i < steps.length; i++) {
+            for (int j = 0; j < figures.length; j++) {
+                if (figures[j] != null) {
+                    if (figures[j].position().equals(steps[i])) {
+                        free = false;
+                    }
+                }
+            }
+        }
+        return free;
     }
 
     public void clean() {
